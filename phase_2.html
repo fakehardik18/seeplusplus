@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>set-2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        /* Custom styles for radio buttons */
+        input[type="radio"] {
+            appearance: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            outline: none;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="radio"]:checked {
+            background-color: #10b981;
+            /* Tailwind's green-500 */
+            border-color: #10b981;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        label:hover {
+            background-color: #2d3748;
+            /* Tailwind's gray-700 */
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-white">
+
+    <!-- Navbar -->
+    <nav class="bg-gray-800 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-xl font-bold">seeplusplus</div>
+        </div>
+    </nav>
+
+    <!-- Quiz Section -->
+    <section class="container mx-auto py-16 text-center">
+        <h1 class="text-3xl font-bold mb-6">set 2 questions</h1>
+        <h4 class="text-xs font-bold mb-6">number in [] represents the slide number from which the question has been
+            taken from</h4>
+
+        <!-- Quiz Question and Options -->
+        <div id="quiz-container" class="bg-gray-800 rounded-lg shadow-lg p-8 max-w-2xl mx-auto">
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-700 rounded-full mb-4">
+                <div id="progress-bar" class="bg-green-500 h-2 rounded-full" style="width: 0%;"></div>
+            </div>
+            <p id="question" class="text-xl font-semibold mb-4">Question text will go here</p>
+            <form id="options-form" class="space-y-4">
+                <!-- Options will be inserted here dynamically -->
+            </form>
+            <div class="flex justify-between mt-6">
+                <button id="previous-question"
+                    class="bg-gray-600 hover:bg-gray-500 text-white py-2 px-4 rounded hidden">Previous</button>
+                <div>
+                    <button id="check-answer"
+                        class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 mr-2 rounded">Check Answer</button>
+                    <button id="next-question"
+                        class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded hidden">Next</button>
+                </div>
+            </div>
+            <!-- Exit Quiz Button -->
+            <button id="exit-quiz" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 mt-4 rounded">Exit
+                Quiz</button>
+        </div>
+
+        <!-- Done Button -->
+        <button id="done-quiz"
+            class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 mt-8 rounded hidden">Done</button>
+    </section>
+
+    <script>
+        const quizData = [
+            {
+                "question": "What does the Control Unit in the CPU do?",
+                "options": [
+                    "Executes arithmetic operations",
+                    "Stores data temporarily",
+                    "Reads and interprets program instructions",
+                    "Performs logical operations"
+                ],
+                "correct_option": "Reads and interprets program instructions",
+                "slide": 13
+            },
+            {
+                "question": "Which operation is NOT performed by the Arithmetic and Logic Unit (ALU)?",
+                "options": [
+                    "Addition",
+                    "Multiplication",
+                    "XOR",
+                    "Data storage"
+                ],
+                "correct_option": "Data storage",
+                "slide": 13
+            },
+            {
+                "question": "What is the primary function of the Register in the CPU?",
+                "options": [
+                    "Store data permanently",
+                    "Execute instructions",
+                    "Serve as a high-speed buffer between CPU and memory",
+                    "Carry control signals"
+                ],
+                "correct_option": "Serve as a high-speed buffer between CPU and memory",
+                "slide": 14
+            },
+            {
+                "question": "What kind of data does the Data Bus carry?",
+                "options": [
+                    "Memory addresses",
+                    "Control signals",
+                    "Data between the CPU and memory",
+                    "Instructions only"
+                ],
+                "correct_option": "Data between the CPU and memory",
+                "slide": 15
+            },
+            {
+                "question": "What type of memory is used to store data temporarily and is lost when the computer is turned off?",
+                "options": [
+                    "RAM",
+                    "ROM",
+                    "Hard disk",
+                    "Cache"
+                ],
+                "correct_option": "RAM",
+                "slide": 17
+            },
+            {
+                "question": "Which of the following is an example of Secondary Memory?",
+                "options": [
+                    "Cache",
+                    "ROM",
+                    "Magnetic tape",
+                    "RAM"
+                ],
+                "correct_option": "Magnetic tape",
+                "slide": 18
+            },
+            {
+                "question": "What is the role of Cache Memory?",
+                "options": [
+                    "To store essential programs like BIOS",
+                    "To store data last processed by the CPU",
+                    "To store permanent data",
+                    "To execute complex arithmetic operations"
+                ],
+                "correct_option": "To store data last processed by the CPU",
+                "slide": 17
+            },
+            {
+                "question": "Which device is classified as an optical storage device?",
+                "options": [
+                    "Hard disk",
+                    "Floppy disk",
+                    "DVD-ROM",
+                    "Magnetic tape"
+                ],
+                "correct_option": "DVD-ROM",
+                "slide": 18
+            },
+            {
+                "question": "Which of the following is an example of System Software?",
+                "options": [
+                    "MS Word",
+                    "Operating System",
+                    "Spreadsheet Software",
+                    "Web Browser"
+                ],
+                "correct_option": "Operating System",
+                "slide": 21
+            },
+            {
+                "question": "What does a First-Generation Language (1GL) refer to?",
+                "options": [
+                    "Assembly language",
+                    "Machine language",
+                    "C++",
+                    "SQL"
+                ],
+                "correct_option": "Machine language",
+                "slide": 23
+            },
+            {
+                "question": "Which programming paradigm organizes code around objects that encapsulate data?",
+                "options": [
+                    "Declarative",
+                    "Functional",
+                    "Imperative",
+                    "Object-Oriented"
+                ],
+                "correct_option": "Object-Oriented",
+                "slide": 24
+            },
+            {
+                "question": "Which of the following is a high-level language?",
+                "options": [
+                    "Machine Language",
+                    "Assembly Language",
+                    "C++",
+                    "Binary code"
+                ],
+                "correct_option": "C++",
+                "slide": 25
+            },
+            {
+                "question": "Which tool combines multiple object files into a single executable file?",
+                "options": [
+                    "Compiler",
+                    "Assembler",
+                    "Linker",
+                    "Loader"
+                ],
+                "correct_option": "Linker",
+                "slide": 30
+            },
+            {
+                "question": "What does a Loader do in a program's execution process?",
+                "options": [
+                    "Compiles the program",
+                    "Loads the program into memory",
+                    "Assembles source code",
+                    "Links object files"
+                ],
+                "correct_option": "Loads the program into memory",
+                "slide": 30
+            },
+            {
+                "question": "Which of the following is a key advantage of a flowchart?",
+                "options": [
+                    "Simplifies complex logic",
+                    "Minimizes coding errors",
+                    "Enhances program efficiency",
+                    "Facilitates communication"
+                ],
+                "correct_option": "Facilitates communication",
+                "slide": 37
+            },
+            {
+                "question": "Which flowchart symbol is used to represent Input/Output operations?",
+                "options": [
+                    "Rectangle",
+                    "Circle",
+                    "Parallelogram",
+                    "Diamond"
+                ],
+                "correct_option": "Parallelogram",
+                "slide": 38
+            },
+            {
+                "question": "In the translation hierarchy, which tool is responsible for converting assembly language into machine code?",
+                "options": [
+                    "Interpreter",
+                    "Compiler",
+                    "Assembler",
+                    "Linker"
+                ],
+                "correct_option": "Assembler",
+                "slide": 28
+            },
+            {
+                "question": "In C programming, what is the role of the preprocessor?",
+                "options": [
+                    "Translates assembly code into machine code",
+                    "Checks syntax errors",
+                    "Handles file inclusion and macros",
+                    "Converts high-level language into machine code"
+                ],
+                "correct_option": "Handles file inclusion and macros",
+                "slide": 67
+            },
+            {
+                "question": "Which of the following software is NOT a text editor for writing C code?",
+                "options": [
+                    "Notepad",
+                    "Vim/Emacs",
+                    "Turbo C++",
+                    "Microsoft Visual Studio"
+                ],
+                "correct_option": "Turbo C++",
+                "slide": 65
+            },
+            {
+                "question": "What are the steps involved in the compilation process of a C program?",
+                "options": [
+                    "Input -> Output -> Processing",
+                    "Preprocessor -> Compiler -> Linker -> Loader",
+                    "Compiler -> Interpreter -> Loader",
+                    "Source code -> Object code -> Assembly"
+                ],
+                "correct_option": "Preprocessor -> Compiler -> Linker -> Loader",
+                "slide": 67
+            }
+        ]
+
+
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+
+        // Load the first question on page load
+        window.onload = () => {
+            loadQuestion(currentQuestionIndex);
+            updateProgressBar();
+        };
+
+        // Load the question and its options
+        function loadQuestion(index) {
+            const questionData = quizData[index];
+            document.getElementById("question").textContent = "[" + questionData.slide + "]" + questionData.question;
+
+            const optionsForm = document.getElementById("options-form");
+            optionsForm.innerHTML = "";
+
+            questionData.options.forEach((option, i) => {
+                const optionElement = document.createElement("div");
+                optionElement.classList.add("flex", "items-center", "bg-gray-700", "hover:bg-gray-600", "rounded-lg", "p-2");
+
+                const input = document.createElement("input");
+                input.type = "radio";
+                input.name = "answer";
+                input.value = option;
+                input.id = `option-${i}`;
+                input.classList.add("mr-2");
+
+                const label = document.createElement("label");
+                label.setAttribute("for", `option-${i}`);
+                label.textContent = option;
+
+                optionElement.appendChild(input);
+                optionElement.appendChild(label);
+                optionsForm.appendChild(optionElement);
+            });
+
+            // Show or hide navigation buttons
+            document.getElementById("previous-question").classList.toggle("hidden", index === 0);
+            document.getElementById("next-question").classList.add("hidden");
+        }
+
+        // Check answer logic
+        document.getElementById("check-answer").onclick = function () {
+            const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+            if (!selectedAnswer) {
+                alert("Please select an answer.");
+                return;
+            }
+
+            const correctAnswer = quizData[currentQuestionIndex].correct_answer;
+            const slideNumber = quizData[currentQuestionIndex].slide_number;
+            const selectedOption = selectedAnswer.value;
+
+            const options = document.querySelectorAll("input[name='answer']");
+            options.forEach(option => {
+                const label = document.querySelector(`label[for='${option.id}']`);
+                if (option.value === selectedOption) {
+                    if (selectedOption === correctAnswer) {
+                        label.classList.add("text-green-500", "font-bold");
+                        correctAnswers++;
+                        launchConfetti();
+                    } else {
+                        label.classList.add("text-red-500", "font-bold");
+                    }
+                } else if (option.value === correctAnswer) {
+                    label.classList.add("text-green-500", "font-bold");
+                }
+            });
+
+            // Show next question or done button
+            if (currentQuestionIndex < quizData.length - 1) {
+                document.getElementById("next-question").classList.remove("hidden");
+            } else {
+                document.getElementById("done-quiz").classList.remove("hidden");
+            }
+
+            // Update progress bar
+            updateProgressBar();
+        };
+
+        // Handle next question button click
+        document.getElementById("next-question").onclick = function () {
+            currentQuestionIndex++;
+            loadQuestion(currentQuestionIndex);
+            document.getElementById("next-question").classList.add("hidden");
+        };
+
+        // Handle previous question button click
+        document.getElementById("previous-question").onclick = function () {
+            currentQuestionIndex--;
+            loadQuestion(currentQuestionIndex);
+            document.getElementById("next-question").classList.add("hidden");
+        };
+
+        // Launch confetti effect
+        function launchConfetti() {
+            confetti({
+                spread: 70,
+                startVelocity: 30,
+                particleCount: 70,
+                origin: { y: 0.6 },
+            });
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            const progressBar = document.getElementById("progress-bar");
+            const percentage = ((currentQuestionIndex + 1) / quizData.length) * 100;
+            progressBar.style.width = `${percentage}%`;
+        }
+
+        // Handle done quiz button click
+        document.getElementById("done-quiz").onclick = function () {
+            alert(`Quiz completed! You answered ${correctAnswers} out of ${quizData.length} questions correctly.`);
+            window.location.href = "index.html"; // Redirect to home page
+        };
+
+        // Handle exit quiz button click
+        document.getElementById("exit-quiz").onclick = function () {
+            window.location.href = "index.html"; // Redirect to home page
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiscus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-900 text-white">
+    <nav class="bg-gray-800 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-xl font-bold">seeplusplus</div>
+        </div>
+    </nav>
+    <section class="text-center py-16">
+        <h1 class="text-4xl font-bold mb-4">wassup brrrr</h1>
+        <p class="text-lg">"Still loadin" that's the caption</p>
+    </section>
+
+    <!-- Cards Section -->
+    <section class="container mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8 px-4">
+        <!-- IPO Card -->
+        <div class="bg-gray-800 rounded-lg shadow-lg p-6 text-center">
+            <h2 class="text-2xl font-bold mb-4">set-1</h2>
+            <button onclick="navigateToQuiz('phase_1')"
+                class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Get Started</button>
+        </div>
+
+        <!-- Stock Market Card -->
+        <div class="bg-gray-800 rounded-lg shadow-lg p-6 text-center">
+            <h2 class="text-2xl font-bold mb-4">set-2</h2>
+            <button onclick="navigateToQuiz('phase_2')"
+                class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Get Started</button>
+        </div>
+
+        <!-- Saving Card -->
+        <div class="bg-gray-800 rounded-lg shadow-lg p-6 text-center">
+            <h2 class="text-2xl font-bold mb-4">set-3</h2>
+            <button onclick="navigateToQuiz('phase_3')"
+                class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Get Started</button>
+        </div>
+    </section>
+
+    <!-- JavaScript -->
+    <script>
+        function navigateToQuiz(topic) {
+            let quizPage = '';
+
+            // Choose the correct quiz page based on the topic
+            switch (topic) {
+                case 'phase_1':
+                    quizPage = 'phase_1.html';
+                    break;
+                case 'phase_2':
+                    quizPage = 'phase_2.html';
+                    break;
+                case 'phase_3':
+                    quizPage = 'phase_3.html';
+                    break;
+            }
+
+            // Redirect to the chosen quiz page
+            window.location.href = quizPage;
+        }
+    </script>
+
+</body>
+
+</html>
